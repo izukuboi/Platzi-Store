@@ -1,17 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AppService } from './app.service';
+import { example } from './interfaces/example';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('getMessage')
-  getHello(): string {
-    return this.appService.getSomeMesage();
+  getMessage(@Query() query: example): string {
+
+    return this.appService.getSomeMesage(query.name, query.nepe);
   }
   @Get('getHello')
-  getAnotherMessageNagger(): string {
+  getHello(): string {
     return this.appService.getHello();
   }
-
 }
