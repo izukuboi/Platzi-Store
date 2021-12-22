@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { product } from 'src/interfaces/example';
 
 @Controller('products')
@@ -15,11 +15,12 @@ export class ProductsController {
   }
 
   @Get('filter')
-  getFilter(): string {
-    return 'Im a filter';
+  getFilter(): any {
+    return { message: 'Im a filter' };
   }
 
   @Get(':productId')
+  @HttpCode(HttpStatus.ACCEPTED)
   getProduct(@Param('productId') productId: string): any {
     return { message: `Product ${productId}` };
   }
@@ -28,7 +29,21 @@ export class ProductsController {
   create(@Body() payload: product) {
     return {
       message: `created product`,
-      payload: payload
+      payload: payload,
     };
+  }
+  @Put(':productId')
+  update(@Body() payload: product, @Param('productId') productId: string){
+    return {
+      productId,
+      payload
+    }
+  }
+  @Delete(':productId')
+  delete(@Param('productId') productId: string){
+    return{
+      productId,
+      message: 'deleted'
+    }
   }
 }
