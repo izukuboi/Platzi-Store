@@ -1,8 +1,20 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
-import { product } from 'src/interfaces/example';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
+import { ProductsService } from 'src/services/products.service';
 
 @Controller('products')
 export class ProductsController {
+  constructor(private readonly productService: ProductsService) {}
   @Get()
   getProducts(
     @Query('limit') limit = 100,
@@ -21,29 +33,30 @@ export class ProductsController {
 
   @Get(':productId')
   @HttpCode(HttpStatus.ACCEPTED)
-  getProduct(@Param('productId') productId: string): any {
-    return { message: `Product ${productId}` };
+  getProduct(@Param('productId') productId: number): any {
+    let prod = this.productService.findOne(productId);
+    return { prod };
   }
 
   @Post()
-  create(@Body() payload: product) {
+  create(@Body() payload: any) {
     return {
       message: `created product`,
       payload: payload,
     };
   }
   @Put(':productId')
-  update(@Body() payload: product, @Param('productId') productId: string){
+  update(@Body() payload: any, @Param('productId') productId: string) {
     return {
       productId,
-      payload
-    }
+      payload,
+    };
   }
   @Delete(':productId')
-  delete(@Param('productId') productId: string){
-    return{
+  delete(@Param('productId') productId: string) {
+    return {
       productId,
-      message: 'deleted'
-    }
+      message: 'deleted',
+    };
   }
 }
