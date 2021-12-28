@@ -15,7 +15,7 @@ export class ProductsService {
       image: '',
     },
     {
-      id: 2,
+      id: 3,
       name: 'pelota',
       description: 'description pelota',
       price: 222,
